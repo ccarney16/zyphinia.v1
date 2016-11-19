@@ -1,0 +1,56 @@
+{#
+ # Main Navigation bar
+ #}
+
+{% set nav = craft.amNav.getNavRaw("mainNavigationMenu") %}
+
+ {% macro addNodeToNavigation(node, index) %}
+    {%- set nodeClasses = [] -%}
+    {%- if node.hasChildren -%}
+        {%- set nodeClasses = nodeClasses|merge(['dropdown has-children']) -%}
+    {%- endif -%}
+    {%- if node.active or node.hasActiveChild -%}
+        {%- set nodeClasses = nodeClasses|merge(['active']) -%}
+    {%- endif -%}
+    {%- if node.level == 1 and index == 1 -%}
+        {%- set nodeClasses = nodeClasses|merge(['first']) -%}
+    {%- endif -%}
+    {%- if node.listClass|length -%}
+        {%- set nodeClasses = nodeClasses|merge([node.listClass]) -%}
+    {%- endif -%}
+
+    <li{% if nodeClasses|length %} class="{{ nodeClasses|join(' ') }}"{% endif %}>
+        <a href="{{ node.url }}" title="{{ node.name }}"{% if node.blank %} target="_blank"{% endif %}><i class="enable-mobile fa fa-caret-right"></i> {{ node.name }}
+            {% if node.hasChildren %}
+                 <i class="fa fa-angle-down"></i>
+            {% endif %}
+        </a>
+        {% if node.hasChildren %}
+            <ul class="dropdown-menu nav__level{{ (node.level + 1) }}">
+                {% for subnode in node.children %}
+                    {{ _self.addNodeToNavigation(subnode, loop.index) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+<nav class="navbar" id="main-nav">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">                        <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <p class="navbar-brand">{{ siteName }}</p>
+        </div>
+        <div id="navbar-collapse" class="collapse navbar-collapse navbar-right">
+            <ul id="main-menu" class="nav navbar-nav">
+                {% for node in nav %}
+                    {{ _self.addNodeToNavigation(node, loop.index) }}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>

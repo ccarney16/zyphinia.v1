@@ -1,0 +1,14 @@
+{#
+ # Generic page template using the content builder
+ #}
+
+{% extends "layouts/_page" %}
+{% import "functions/_contentBuilder" as cb %}
+
+{% block content %}
+	<div class="content">
+		{% for block in entry.contentBuilder %}
+			{{ cb.buildContent(block) }}
+		{% endfor %}
+	</div>
+{% endblock %}

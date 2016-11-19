@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>503 | {{ siteName }}</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" />
+        <style>
+            * {
+                font-family: 'Raleway', sans-serif;
+            }
+        </style> 
+    </head>
+    <body>
+        <article style="text-align: center; padding: 20px;">
+            <h1>
+                {% if maintenanceStatus.maintenanceHeader != "" %}
+                    {{ maintenanceStatus.maintenanceHeader | markdown }}
+                {% else %}
+                    This server is currently going under some maintenance. Please check again later!</h1>
+                {% endif %}
+            </h1>
+            {% if maintenanceStatus.maintenanceMessage != "" %}
+                <div style=" border: solid thin #aaa; border-radius: 3px; ">
+                    {{ maintenanceStatus.maintenanceMessage | markdown }}
+                </div>
+            {% endif %}
+        </article>
+    </body>
+</html>

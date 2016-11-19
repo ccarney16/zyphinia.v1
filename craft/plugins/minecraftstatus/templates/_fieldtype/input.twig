@@ -1,0 +1,27 @@
+{% import "_includes/forms" as forms %}
+
+<div id="{{ name }}" class="minecraft-server-field" style="border: solid thin #ddd; border-radius: 4px; padding: 10px; overflow: hidden;">
+    <span>Server Name: </span><span>{{ forms.text({
+        id: name~'serverName',
+        placeholder: 'Mojang\'s Official Server',
+        class: name~'serverName',
+        name: name~'[serverName]', 
+        value: serverName ? serverName
+    }) }}</span>
+    <hr/>
+    <span>Server IP: </span><span>{{ forms.text({
+        id: name~'serverIP',
+        placeholder: 'mojang.com',
+        class: name~'serverIP',
+        name: name~'[serverIP]', 
+        value: serverIP ? serverIP
+    }) }}</span><hr/>
+    <span>Server Port: </span><span>{{ forms.text({
+        type: 'number',
+        id: name~'serverPort',
+        placeholder: '25565',
+        class: name~'serverPort',
+        name: name~'[serverPort]', 
+        value: serverPort ? serverPort
+    }) }}</span>
+</div>

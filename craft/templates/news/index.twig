@@ -1,0 +1,76 @@
+{#
+ # News index
+ #}
+
+{% extends "layouts/_basiclayout" %}
+{% import "functions/_news" as newsFunctions %}
+
+{% if craft.request.getSegment(2) == 'category' %}
+	{% paginate craft.entries.section('news').relatedTo(category).limit(10) as pageInfo, pageEntries %}
+{% else %}
+	{% paginate craft.entries.section('news').limit(10) as pageInfo, pageEntries %}
+{% endif %}
+
+{% block content %}
+	<div class="content">
+		<h2 class="text-header">News{% if category is defined %}<small>/{{ category.title }}</small>{% endif %}
+		</h2>
+		<div class="row">
+			<div class="col-sm-9">
+				<hr/>
+				{% if pageEntries | length %}
+					{{ newsFunctions.generateArticleListHTML(pageEntries) }}
+				{% else %}
+					<h3>There is no content in this category...</h3>
+				{% endif %}
+
+				{% if pageInfo.totalPages != 0 %} 
+					{# Ugly navigation code, works for now #}
+					<nav class="news-pagination" aria-label="News Navigation">
+						<ul class="pagination">
+							{% if pageInfo.currentPage == 1 %}
+								<li class="disabled"><a><i class="fa fa-angle-double-left"></i></a></li>
+							{% else %}
+								<li><a href="{{ pageInfo.firstUrl }}"><i class="fa fa-angle-double-left"></i></a></li>
+							{% endif %}
+							{% for page, url in pageInfo.getPrevUrls(5) %}
+								<li><a href="{{ url }}">{{ page }}</a></li>
+							{% endfor %}
+							<li class="active"><a href="{{ currentUrl }}">{{ pageInfo.currentPage }}</a></li>
+							{% for page, url in pageInfo.getNextUrls(5) %}
+								<li><a href="{{ url }}">{{ page }}</a></li>
+							{% endfor %}
+							{% if pageInfo.currentPage == pageInfo.totalPages %}
+								<li class="disabled"><a><i class="fa fa-angle-double-right"></i></a></li>
+							{% else %}
+								<li><a href="{{ pageInfo.lastUrl }}"><i class="fa fa-angle-double-right"></i></a></li>
+							{% endif %}
+						</ul>
+					</nav>
+				{% endif %}
+			</div>
+			<div class="col-sm-3" style="padding-top: 20px;">
+				<div class="panel panel-custom">
+					<div class="panel-heading"><h3>Latest Articles</h3></div>
+					<div class="panel-body">
+						<ul class="nav nav-stacked">
+							{% for latestEntry in craft.entries.section('news').limit(5) %}
+								<li><a href="{{ latestEntry.url }}" style="font-size: 16px;">{{ latestEntry.title }} <small>{{ latestEntry.postDate | date('m/d/Y') }}</small></a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div class="panel panel-custom">
+					<div class="panel-heading"><h3>Categories</h3></div>
+					<div class="panel-body">
+						<ul class="nav nav-stacked">
+							{% for category in craft.categories.group("news") %}
+								<li><a href="{{ category.url }}" style="font-size: 16px;">{{ category.title }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

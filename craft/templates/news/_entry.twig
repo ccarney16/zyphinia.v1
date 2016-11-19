@@ -1,0 +1,37 @@
+{% extends "layouts/_basiclayout" %}
+
+{# We are using a different header system#}
+{% block header %}
+	{% if entry.featuredImage.first().url != "" %}
+    	<div id="header" class="header-news">
+			<div class="header-img" style="background: url({{ entry.featuredImage.first().url }});"></div> 
+		</div>
+	{% endif %}
+{% endblock %}
+{% block content %}
+	<div class="content">
+		<div class="row">
+			<div class="col-md-9">
+				<hr/>
+				<article class="news-article">
+					<h2>{{ entry.title }}</h2>
+					<h3 style="margin-top:-5px;"><small>Posted on {{ entry.postDate.format('F d, Y') }} by {{ entry.author }}</small></h3>
+					<br/>
+					{{ entry.body }}
+				</article>
+			</div>
+			<div class="col-md-3" style="padding-top: 20px;">
+				<div class="panel panel-custom">
+					<div class="panel-heading"><h3>Latest Articles</h3></div>
+					<div class="panel-body" style="padding: 0; overflow: hidden;">
+						<ul class="nav nav-stacked">
+							{% for latestEntry in craft.entries.section('news').limit(5) %}
+								<li><a href="{{ latestEntry.url }}" style="font-size: 16px;">{{ latestEntry.title }} <small>{{ latestEntry.postDate | date('m/d/Y') }}</small></a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

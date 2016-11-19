@@ -1,0 +1,22 @@
+{#
+ # About Entry Page
+ #}
+
+{% extends "layouts/_page" %}
+
+{% block content %}
+    <div class="content">
+        <div class="html-content-block">
+            {{ entry.body }}
+        </div>
+        <hr class="separator"/>
+        <h2>Staff list</h2>
+        <table class="table administration-table table-striped table-bordered">
+            <tr>
+                <th>Username</th>
+                <th>@Discord</th>
+                <th>Rank</th>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{#
+ # Standard layout for all the pages.
+ #}
+
+{% extends "layouts/_basiclayout" %}
+
+{% block header %}
+    {% if entry.headerEnabled %}
+        {% set headerAsset = globalVariables.defaultHeaderImg.first() %}
+        {% set headerSize = "header-normal" %}
+
+        {% if entry.headerImage is defined %}
+            {% if entry.headerImage.first() %}
+                {% set headerAsset = entry.headerImage.first() %}
+            {% endif %}
+        {% endif %}
+        
+        <div id="header" class="{{ headerSize }}">
+            {% if entry.headerContent != "" %}
+                <div class="header-content">
+                    <div class="jumbotron">
+                        {{ entry.headerContent }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="header-img" style="background: url({{ headerAsset.url }});"></div> 
+        </div>
+    {% endif %}
+{% endblock %}

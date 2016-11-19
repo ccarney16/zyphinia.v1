@@ -1,0 +1,21 @@
+{% macro buildContent(block) %}
+    {% switch block.type %}
+		{% case "headerText" %}
+			<h1 class="text-header">{{ block.text }}</h1>
+		{% case "separator" %}
+			<hr class="separator" />
+		{% case "htmlContent" %}
+			<div class="html-content-block" style="text-align: {{ block.htmlPosition }};">
+				{{ block.contentText | markdown }}
+			</div>
+		{% case "twoColumn" %}
+			<div class="row two-column"> 
+				<div class="col-sm-6" style="text-align: {{ block.column1Align }}">
+					{{ block.column1 | markdown }}
+				</div>
+				<div class="col-sm-6" style="text-align: {{ block.column2Align }}">
+					{{ block.column2 | markdown }}
+				</div>
+			</div>
+	{% endswitch %}
+{% endmacro %}

@@ -1,0 +1,31 @@
+{#
+ # Voting Page, Designed to be used for voting
+ #}
+ 
+{% extends "layouts/_page" %}
+
+{% block content %}
+    <div class="content">
+        <br/>
+        {# using the normal body block now #}
+        {% if entry.body != ""%}
+           <div class="html-content-block">
+                {{ entry.body }}
+            </div>
+            <hr/>
+        {% endif %}
+
+        {# Lets use our vote content matrix block #}
+        <div class="row">
+            {% for block in entry.voteContent  %}
+                <div class="col-md-4 col-sm-6 voting-block" style="background: url({{ block.votingBackground.first().url }});" >
+                    <img class="voting-logo" src="{{ block.siteLogo.first().url }}">
+                    <div class="voting-content">
+                        <a class="btn btn-primary btn-lg" href="{{ block.votingSiteUrl }}" target="_blank">Vote on {{ block.siteName }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <hr/>
+    </div>
+{% endblock %}

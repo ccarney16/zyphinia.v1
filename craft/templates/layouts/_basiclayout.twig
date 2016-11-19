@@ -1,0 +1,83 @@
+{#
+ # Our Base Layout
+ #}
+
+ <!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title> {% if entry.title is defined %}{{ entry.title }} | {% endif %}{{ siteName }}</title>
+
+        <!-- Bootstrap -->
+        <link href="{{ siteUrl }}theme/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="{{ siteUrl }}theme/css/bootstrap-theme.min.css" rel="stylesheet" />
+        <link href="{{ siteUrl }}theme/css/font-awesome.min.css" rel="stylesheet" />
+        
+        <link href="{{ siteUrl }}theme/css/style.css" rel="stylesheet" />
+
+
+        {% block extraHtmlHeaderContent %}
+            {# If a page needs more stuff in it #}
+        {% endblock %}
+
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <p class="infobar">
+            {% if infobar.motd is defined %}
+                <span class="motd">{{ infobar.motd }}</span>
+            {% endif %}
+            <span class="pull-right">
+                {% if infobar.enableSocialMedia %}
+                    <span class="social-media">
+                        {% if infobar.facebookUrl != "" %}
+                            <a title="Facebook Profile Link" href="{{ infobar.facebookUrl }}"><i class="fa fa-facebook-square" aria-hidden="true" ></i></a>&nbsp;
+                        {% endif %}
+                        {% if infobar.twitterUrl != "" %}
+                            <a title="Twitter Profile Link" href="{{ infobar.facebookUrl }}"><i class="fa fa-twitter" aria-hidden="true" ></i></a>&nbsp;
+                        {% endif %}
+                        {% if infobar.githubUrl != "" %}
+                            <a title="Github Developer Link" href="{{ infobar.githubUrl }}"><i class="fa fa-github" aria-hidden="true" ></i></a>
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </span>
+        </p>
+        {{ include("layouts/_navbar.twig") }}
+        <div id="page">
+            {% block header %}
+                {# left intentionally blank.#}
+            {% endblock %}
+
+            {% block content %}
+                <div class="content">
+                    <p>Uh oh, your not meant to see this (Was routing correctly configured?)</p>
+                </div>
+            {% endblock %}
+        </div>
+        <footer>
+            {# If our global variable footer does exist #}
+            {% if globalVariables.footerCopyright != "" %}
+                {{ globalVariables.footerCopyright }}
+            {% else %}
+                Copyright &copy; {{ now.year }} {{ craft.request.serverName | ucfirst }}
+            {% endif %}
+
+            {% if globalVariables.footerRighthand != "" %}
+                <span class="pull-right">{{ globalVariables.footerRighthand }}</span>
+            {% endif %}
+        </footer>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{{ siteUrl }}theme/js/bootstrap.min.js"></script>
+
+        {% block extraHtmlFooterContent %}
+            {# For custom Javascripting #}
+        {% endblock %}
+    </body>
+</html>
