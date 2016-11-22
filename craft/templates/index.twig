@@ -7,16 +7,14 @@
 {# For easy to read code, contentBuilder already was named as a variable, so the functions are cb #}
 {% import "functions/_contentBuilder" as cb %}
 
-{# We are using a custom header for this page#}
+{# We are using a custom header for this page #}
 {% block header %}
     {% set headerAsset = globalVariables.defaultHeaderImg.first() %}
-
     {% if entry.headerImage is defined %}
         {% if entry.headerImage.first() %}
             {% set headerAsset = entry.headerImage.first() %}
         {% endif %}
     {% endif %}
-        
     <div id="header" class="header-homepage">
         {% if entry.headerContent != "" %}
             <div class="header-content">
@@ -59,20 +57,23 @@
 		{% endfor %}
 	</div>
 	<div class="content">
+		{# We use content blocks #}
 		{% for block in entry.contentBuilder %}
 			{{ cb.buildContent(block) }}
 		{% endfor %}
+
+		{# Now lets show the latest news for our site#}
 		<hr class="separator"/>
 		<h2 class="text-header">Latest News</h2>
 		<hr class="separator"/>
-
-		{% set newsEntries = craft.entries.section('news').limit(3)%}
+		{% set newsEntries = craft.entries.section('news').limit(4)%}
 		<div class="row latest-news">
 			{% for nEntry in newsEntries %}
-				<div class="col-sm-4">
+				<div class="col-md-3 col-xs-6">
 					<div class="" style="padding: 10px;">
+						<img src="{{ nEntry.featuredImage.first().url }}" style="width:100%; height: 160px; border-radius: 2px;">
 						<a href="{{ nEntry.url }}"><h4>{{ nEntry.title }}</h4></a>
-						<h4><small>Posted on 11/1/2016 by {{ nEntry.author }}</small></h4>
+						<h4 style="margin-top: -5px"><small>Posted on {{ nEntry.postDate.format('F d, Y') }}</small></h4>
 					</div>		
 				</div>
 			{% endfor %}

@@ -17,6 +17,13 @@
                 <th>@Discord</th>
                 <th>Rank</th>
             </tr>
+            {% for member in craft.categories.group("administrationTeam") %}
+                <tr>
+                    <td>{{ member.memberName }}</td>
+                    <td>{{ member.memberDiscord }}</td>
+                    <td>{{ member.memberPosition }}</td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 {% endblock %}
