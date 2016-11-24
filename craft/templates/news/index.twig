@@ -3,23 +3,22 @@
  #}
 
 {% extends "layouts/_basiclayout" %}
-{% import "functions/_news" as newsFunctions %}
+{% set channelName = "news" %}
+{% set categoryName = "news" %}
 
 {% if craft.request.getSegment(2) == 'category' %}
-	{% paginate craft.entries.section('news').relatedTo(category).limit(10) as pageInfo, pageEntries %}
+	{% paginate craft.entries.section(channelName).relatedTo(category).limit(10) as pageInfo, pageEntries %}
 {% else %}
-	{% paginate craft.entries.section('news').limit(10) as pageInfo, pageEntries %}
+	{% paginate craft.entries.section(channelName).limit(10) as pageInfo, pageEntries %}
 {% endif %}
 
 {% block content %}
 	<div class="content">
-		<h2 class="text-header">News{% if category is defined %}<small>/{{ category.title }}</small>{% endif %}
-		</h2>
 		<div class="row">
 			<div class="col-sm-9">
 				<hr/>
 				{% if pageEntries | length %}
-					{{ newsFunctions.generateArticleListHTML(pageEntries) }}
+					{{ func.generateArticleList(pageEntries) }}
 				{% else %}
 					<h3>There is no content in this category...</h3>
 				{% endif %}
@@ -36,7 +35,7 @@
 							{% for page, url in pageInfo.getPrevUrls(5) %}
 								<li><a href="{{ url }}">{{ page }}</a></li>
 							{% endfor %}
-							<li class="active"><a href="{{ currentUrl }}">{{ pageInfo.currentPage }}</a></li>
+							<li class="active"><a href="{{ craft.request.url }}">{{ pageInfo.currentPage }}</a></li>
 							{% for page, url in pageInfo.getNextUrls(5) %}
 								<li><a href="{{ url }}">{{ page }}</a></li>
 							{% endfor %}

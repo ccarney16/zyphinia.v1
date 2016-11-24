@@ -1,0 +1,73 @@
+{#
+ # General Functions Location
+ #}
+
+
+{#
+ # Content Builder 
+ #}
+{% macro buildContent(block) %}
+    {% switch block.type %}
+		{% case "headerText" %}
+			<h1 class="text-header">{{ block.text }}</h1>
+		{% case "separator" %}
+			<hr class="separator" />
+		{% case "htmlContent" %}
+			<div class="html-content-block" style="text-align: {{ block.htmlPosition }};">
+				{{ block.contentText | markdown }}
+			</div>
+		{% case "twoColumn" %}
+			<div class="row two-column"> 
+				<div class="col-sm-6" style="text-align: {{ block.column1Align }}">
+					{{ block.column1 | markdown }}
+				</div>
+				<div class="col-sm-6" style="text-align: {{ block.column2Align }}">
+					{{ block.column2 | markdown }}
+				</div>
+			</div>
+	{% endswitch %}
+{% endmacro %}
+
+{# 
+ # News Functions 
+ #}
+{% macro generateArticleList(entries, content = "brief", createLinks = true) %}
+	{% for entry in entries %}
+        {{ _self.generateArticle(entry, content, createLinks) }}
+	{% endfor %}
+{% endmacro %}
+
+{% macro generateArticle(entry, content = "full", createLinks = false) %}
+    <article class="news-article">
+        {% if createLinks %}
+	        <a href="{{ entry.url }}"><img class="featured-image" src="{{ entry.featuredImage.first().url }}"/></a>
+        {% else %}
+            <img class="featured-image" src="{{ entry.featuredImage.first().url }}"/>
+        {% endif %} 
+		<h2>
+            {% if createLinks %}
+                <a href="{{ entry.url }}">{{ entry.title }}</a>
+            {% else %}
+                {{ entry.title }}
+            {% endif %}    
+        </h2>
+		<h3 style="margin-top: -10px;"><small>Posted on {{ entry.postDate.format('F d, Y') }} by {{ entry.author }}</small></h3>
+	   	<br/>
+        {% if content == "full" %}
+            {{ entry.body.getPage(1) }}
+        {% else %}
+            {{ entry.body.getPage(1) }}
+		    <p><a href="{{ entry.url }}">Continue reading</a></p>
+        {% endif %}
+	</article>
+	<hr/>
+{% endmacro %}
+
+{# Builds a thumbnail article#}
+{% macro generateArticleThumbnail(entry) %}
+    <article class="news-article news-article-thumbnail" style="padding: 10px;">
+	    <img src="{{ entry.featuredImage.first().url }}" style="width:100%; height: 160px; border-radius: 2px;">
+	    <a href="{{ entry.url }}"><h4>{{ entry.title }}</h4></a>
+		<h4 style="margin-top: -5px"><small>Posted on {{ entry.postDate.format('F d, Y') }}</small></h4>
+	</article>
+{% endmacro %}

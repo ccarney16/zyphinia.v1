@@ -2,13 +2,17 @@
  # Our Base Layout
  #}
 
+{%- import "functions" as func -%}
+
  <!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title> {% if entry.title is defined %}{{ entry.title }} | {% endif %}{{ siteName }}</title>
+        <title>{% block title %}
+        {% if entry.title is defined %}{{ entry.title }} | {% endif %}
+        {% endblock %}{{ siteName }}</title>
 
         <!-- Bootstrap -->
         <link href="{{ siteUrl }}theme/css/bootstrap.min.css" rel="stylesheet" />

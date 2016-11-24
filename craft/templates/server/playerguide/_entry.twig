@@ -1,0 +1,60 @@
+{#
+ # Single page for the player guide
+ #}
+
+{# Redirect to the first child in the header #}
+{% if entry.type == "playerGuideHeader" %}
+    {% redirect entry.children.first().url %}
+{% endif %}
+
+{% extends "layouts/_page" %}
+
+{% macro buildSideNav(node, index) %}
+    {%- set nodeClasses = [] -%}
+    {%- if node.url == craft.session.url -%}
+        {%- set nodeClasses = nodeClasses|merge(['active']) -%}
+    {%- endif -%}
+    <li>
+
+        {% if node.type == "playerGuideHeader" %}
+            <p>{{ node.title }}</p>
+        {% else %}
+            <a class="{{ nodeClasses|join(' ') }}">{{ node.title }}</a>
+        {% endif %}
+        {% if node.hasDescendants %}
+            <ul class="nav side-nav-child nav__level{{ (node.level + 1) }}">
+                {% for subnode in node.getDescendants(1) %}
+                    {{ _self.buildSideNav(subnode, loop.index) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+{% block title %}
+    {{ entry.title }} | {{ craft.sections.getSectionByHandle('playerGuide').name }} |
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+                <hr class="separator"/>
+                <h4>{{ craft.sections.getSectionByHandle('playerGuide').name }}</h4> 
+                <hr class="separator"/>
+                <ul class="nav nav-stacked side-nav">
+                    {% for node in craft.entries.section('playerGuide').level(1) %}
+                        {{ _self.buildSideNav(node, loop.index) }}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-sm-8 col-md-9">
+                <hr/>
+                <h3>&nbsp;&nbsp;&nbsp;{{ entry.title }}</h3>
+                <hr class="separator"/>
+                Test
+                <hr/>
+            </div>
+        </div>
+    </div>
+{% endblock %}

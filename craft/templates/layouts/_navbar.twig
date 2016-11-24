@@ -4,7 +4,7 @@
 
 {% set nav = craft.amNav.getNavRaw("mainNavigationMenu") %}
 
- {% macro addNodeToNavigation(node, index) %}
+{% macro addNodeToNavigation(node, index) %}
     {%- set nodeClasses = [] -%}
     {%- if node.hasChildren -%}
         {%- set nodeClasses = nodeClasses|merge(['dropdown has-children']) -%}

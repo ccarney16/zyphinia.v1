@@ -4,9 +4,6 @@
 
 {% extends "layouts/_basiclayout" %}
 
-{# For easy to read code, contentBuilder already was named as a variable, so the functions are cb #}
-{% import "functions/_contentBuilder" as cb %}
-
 {# We are using a custom header for this page #}
 {% block header %}
     {% set headerAsset = globalVariables.defaultHeaderImg.first() %}
@@ -59,7 +56,7 @@
 	<div class="content">
 		{# We use content blocks #}
 		{% for block in entry.contentBuilder %}
-			{{ cb.buildContent(block) }}
+			{{ func.buildContent(block) }}
 		{% endfor %}
 
 		{# Now lets show the latest news for our site#}
@@ -70,11 +67,7 @@
 		<div class="row latest-news">
 			{% for nEntry in newsEntries %}
 				<div class="col-md-3 col-xs-6">
-					<div class="" style="padding: 10px;">
-						<img src="{{ nEntry.featuredImage.first().url }}" style="width:100%; height: 160px; border-radius: 2px;">
-						<a href="{{ nEntry.url }}"><h4>{{ nEntry.title }}</h4></a>
-						<h4 style="margin-top: -5px"><small>Posted on {{ nEntry.postDate.format('F d, Y') }}</small></h4>
-					</div>		
+					{{ func.generateArticleThumbnail(nEntry) }}		
 				</div>
 			{% endfor %}
 		</div>
